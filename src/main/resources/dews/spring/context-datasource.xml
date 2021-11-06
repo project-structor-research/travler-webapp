@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd		
+		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-4.0.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
+
+	<tx:annotation-driven transaction-manager="dataSourceTransactionManager" />
+		
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">	
+		<property name="driverClassName" value="${db.jdbc.driver}"></property>
+		<property name="url" value="${db.jdbc.url}"></property>
+		<property name="username" value="${db.jdbc.user}"></property>
+		<property name="password" value="${db.jdbc.password}"></property>
+	</bean>
+	
+	<bean id="dataSourceTransactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+    	<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<!-- MyBatis SqlSessionFactoryBean -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource"></property>
+		<property name="mapperLocations" value="${db.jdbc.mapperLocations}" />
+		<property name="configLocation" value="classpath:dews/mybatis/config/mybatis-config.xml" />
+	</bean>
+	
+	<!-- MyBatis SqlSessionTemplate --> 
+	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+   		<constructor-arg index="0" ref="sqlSessionFactory" />
+	</bean>
+
+</beans>

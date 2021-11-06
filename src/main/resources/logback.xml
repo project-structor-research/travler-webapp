@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xml>
+
+<configuration scan="true" scanPeriod="30 seconds">
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>[%d{HH:mm:ss.SSS}] [%-4level] %logger [%method:%line] - %msg%n</pattern>
+        </encoder>
+    </appender>
+    
+    <logger name="jdbc" level="off"/>
+    <logger name="jdbc.sqlonly" level="off"/>
+    <logger name="jdbc.sqltiming" level="info"/>
+    <logger name="jdbc.audit" level="off"/>
+    <logger name="jdbc.resultset" level="off"/>
+    <logger name="jdbc.resultsettable" level="off"/>
+    <logger name="jdbc.connection" level="off"/>
+
+    <root level="info">
+        <appender-ref ref="CONSOLE" />
+    </root>
+    
+    <shutdownHook />
+</configuration>
