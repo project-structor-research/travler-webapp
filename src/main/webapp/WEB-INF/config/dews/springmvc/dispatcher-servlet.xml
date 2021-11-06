@@ -11,6 +11,6 @@
 
  	<mvc:annotation-driven />
  	<context:component-scan base-package="com.springframework" use-default-filters="false">
- 		<context:include-filter type="regex" expression="com.springframework.comet.controller.*" />
+ 		<context:include-filter type="regex" expression="com.springframework.travler.controller.*" />
  	</context:component-scan>
 </beans>

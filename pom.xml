@@ -124,7 +124,7 @@
 	</dependencies>
 
 	<build>
-		<finalName>webapp</finalName>
+		<finalName>travler-webapp</finalName>
 		<sourceDirectory>src/main/java</sourceDirectory>
 		<resources>
 			<resource>
