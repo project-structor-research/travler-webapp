@@ -16,7 +16,6 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 			response.sendRedirect("/forgot");
 			return false;
 		}
-
 		// session 처리
 		return false;
 //		System.err.println("Session Create #######");
