@@ -25,4 +25,11 @@
 			</list>
 		</property>
 	</bean>
+	
+	<mvc:interceptors>
+ 		<mvc:interceptor>
+ 			<mvc:mapping path="/**"/>
+ 			<bean id="loginInterceptor" class="com.springframework.webapp.security.LoginInterceptor"></bean>
+ 		</mvc:interceptor>
+ 	</mvc:interceptors>
 </beans>
