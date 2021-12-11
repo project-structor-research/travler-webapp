@@ -1,4 +1,4 @@
-package com.springframework.webapp.config;
+package com.springframework.travler.config;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -31,7 +31,7 @@ public class AppConfig {
 		try {		
 			Properties properties = new Properties();
 			InputStream reader = AppConfig.class.getResourceAsStream(resource);
-	        properties.load(reader);	// ?ŒŒ?¼ ?—´?–´ì¤?
+	        properties.load(reader);	// ?ï¿½ï¿½?ï¿½ï¿½ ?ï¿½ï¿½?ï¿½ï¿½ï¿½?
 	        
 	        rootConfigurations = (Map<String, String>) properties.keySet().stream()
 					.collect(Collectors.toMap(s -> s.toString(), s -> properties.get(s.toString()).toString()));		

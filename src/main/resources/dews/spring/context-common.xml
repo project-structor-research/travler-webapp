@@ -29,7 +29,7 @@
 	<mvc:interceptors>
  		<mvc:interceptor>
  			<mvc:mapping path="/**"/>
- 			<bean id="loginInterceptor" class="com.springframework.webapp.security.LoginInterceptor"></bean>
+ 			<bean id="loginInterceptor" class="com.springframework.travler.security.LoginInterceptor"></bean>
  		</mvc:interceptor>
  	</mvc:interceptors>
 </beans>

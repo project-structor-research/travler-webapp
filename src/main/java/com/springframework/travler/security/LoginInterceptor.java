@@ -1,4 +1,4 @@
-package com.springframework.webapp.security;
+package com.springframework.travler.security;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,6 +13,10 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
 
+		String reqUrl = request.getRequestURL().toString();
+		System.out.println(reqUrl);
+		System.out.println(request.getContextPath());
+		
 		if("".equals(email) && "".equals(password)) {
 			response.sendRedirect("/login");
 			return false;
