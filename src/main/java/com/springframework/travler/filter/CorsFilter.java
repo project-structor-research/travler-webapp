@@ -2,6 +2,7 @@ package com.springframework.travler.filter;
 
 import java.io.IOException;
 //import java.util.Optional;
+import java.util.Optional;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -16,14 +17,17 @@ import javax.servlet.http.HttpServletResponseWrapper;
 
 public class CorsFilter implements Filter {
 	
+//	private boolean acceptCors = false;
+	private String allowOrigin = "*";
+	
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
 //		this.acceptCors = Boolean.parseBoolean(
 //				(String) Optional.ofNullable(DzGlobalVariable.tryGetValue("application.filter.cors.accept"))
 //						.orElse(Optional.ofNullable(filterConfig.getInitParameter("acceptCors")).orElse("false")));
-//		this.allowOrigin = (String) Optional
-//				.ofNullable(DzGlobalVariable.tryGetValue("application.filter.cors.allow-origin"))
-//				.orElse(Optional.ofNullable(filterConfig.getInitParameter("allowOrigin")).orElse("*"));
+		this.allowOrigin = (String) Optional
+				.ofNullable(System.getProperty("application.filter.cors.allow-origin"))
+				.orElse(Optional.ofNullable(filterConfig.getInitParameter("allowOrigin")).orElse("*"));
 	}
 
 	@Override

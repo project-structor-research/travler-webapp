@@ -31,7 +31,7 @@ public class AppConfig {
 		try {		
 			Properties properties = new Properties();
 			InputStream reader = AppConfig.class.getResourceAsStream(resource);
-	        properties.load(reader);	// ?��?�� ?��?���?
+	        properties.load(reader);
 	        
 	        rootConfigurations = (Map<String, String>) properties.keySet().stream()
 					.collect(Collectors.toMap(s -> s.toString(), s -> properties.get(s.toString()).toString()));		
@@ -58,6 +58,24 @@ public class AppConfig {
 					}
 				}
 			}
+			
+			String appHomePath = getOsPath(rootConfigurations.get("application.home.path"));
+			String configPath = applicationConfigurationPath;
+			String repoConfigPath = Paths.get(appHomePath, "repository").toString();
+			String viewPath = Paths.get(repoConfigPath, "view").toString();
+			String htmlPath = Paths.get(viewPath, "html").toString();
+			String jsPath = Paths.get(viewPath, "js").toString();
+			String imagePath = Paths.get(viewPath, "images").toString();
+			String cssPath = Paths.get(viewPath, "css").toString();
+			
+			System.setProperty("comet.home.dir", appHomePath);
+			System.setProperty("comet.config.dir", configPath);
+			System.setProperty("comet.views.dir", viewPath);
+			System.setProperty("comet.html.dir", htmlPath);
+			System.setProperty("comet.images.dir", imagePath);
+			System.setProperty("comet.js.dir", jsPath);
+			System.setProperty("comet.css.dir", cssPath);
+			
 		} catch(Exception e) {
 			logger.error(e.getMessage());
 		}
