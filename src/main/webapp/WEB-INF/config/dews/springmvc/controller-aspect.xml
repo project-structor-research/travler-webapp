@@ -4,14 +4,4 @@
 	xmlns:aop="http://www.springframework.org/schema/aop"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd		
 		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
-		
-	<!-- <aop:config>
-		<aop:pointcut expression="execution(* com.springframework.travler.controller.ViewController.getView(..))" id="viewPointcut"/>
-		<aop:aspect ref="ViewAdvice">
-			<aop:before method="beforeView" pointcut-ref="viewPointcut"/>
-			<aop:after-returning method="afterViewReturning" pointcut-ref="viewPointcut"/>
-			<aop:after-throwing method="afterViewThrowing" pointcut-ref="viewPointcut" throwing="ex"/>
-		</aop:aspect>
-	</aop:config>
-	<bean id="ViewAdvice" class="com.springframework.travler.advice.ViewAdvice"/> -->
 </beans>
