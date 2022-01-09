@@ -19,23 +19,19 @@ import org.springframework.web.cors.CorsConfiguration;
 import com.springframework.travler.filter.JwtAuthenticationEntryPoint;
 import com.springframework.travler.filter.JwtRequestFilter;
 
-/*
- * WebSecurity와 HttpSecurity를 커스터마이징
- * ex) CORS 등 해결
- * */
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
-	private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
-	@Autowired
-	private UserDetailsService jwtUserDetailsService;
+    @Autowired
+    private UserDetailsService jwtUserDetailsService;
 
-	@Autowired
-	private JwtRequestFilter jwtRequestFilter;
+    @Autowired
+    private JwtRequestFilter jwtRequestFilter;
 
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
