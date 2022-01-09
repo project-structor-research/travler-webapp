@@ -25,16 +25,16 @@ import com.springframework.travler.util.JwtTokenUtil;
 @RestController
 public class JwtAuthenticationController {
 	
-	@Autowired
-    private AuthenticationManager authenticationManager;
-	
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
 
     @Autowired
     private JwtUserDetailsService userDetailsService;
     
-	@RequestMapping(value = "/authenticate", method = RequestMethod.POST)
+    @Autowired
+    private AuthenticationManager authenticationManager;
+	
+    @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
     public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
 		authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
 

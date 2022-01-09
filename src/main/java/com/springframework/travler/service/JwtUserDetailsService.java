@@ -22,7 +22,7 @@ public class JwtUserDetailsService implements UserDetailsService {
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		Member member = memberRepository.list();
+		Member member = memberRepository.getMemberByUsername(username);
 		PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 		
 		if(member != null) {			
