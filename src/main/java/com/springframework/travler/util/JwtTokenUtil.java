@@ -9,6 +9,9 @@ import java.util.function.Function;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+
+import com.springframework.travler.models.JwtResponse;
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -17,7 +20,8 @@ import io.jsonwebtoken.SignatureAlgorithm;
 public class JwtTokenUtil implements Serializable {
 
 	private static final long serialVersionUID = 2916969781416537443L;
-	public static final long JWT_TOKEN_VALIDITY = 5 * 60 * 60;
+	private static final long ACCESS_TOKEN_EXPIRE_TIME = 30 * 60 * 1000L;              // 30분
+    private static final long REFRESH_TOKEN_EXPIRE_TIME = 7 * 24 * 60 * 60 * 1000L;    // 7일
 	@Value("${jwt.secret}")
 	private String secret;
 
@@ -43,16 +47,31 @@ public class JwtTokenUtil implements Serializable {
 		return expiration.before(new Date());
 	}
 
-	public String generateToken(UserDetails userDetails) {
+	public JwtResponse generateToken(UserDetails userDetails) {
 		Map<String, Object> claims = new HashMap<>();
 		return doGenerateToken(claims, userDetails.getUsername());
 	}
 
-	private String doGenerateToken(Map<String, Object> claims, String subject) {
-		return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
-				//.setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 1000))
-				.setExpiration(new Date(System.currentTimeMillis() + 5 * 1000))
-				.signWith(SignatureAlgorithm.HS512, secret).compact();
+	private JwtResponse doGenerateToken(Map<String, Object> claims, String subject) {
+		// Access Token 생성
+		long now = (new Date()).getTime();
+		Date accessTokenExpireTime = new Date(now + ACCESS_TOKEN_EXPIRE_TIME);
+		String accessToken = Jwts.builder()
+				.setClaims(claims)
+				.setSubject(subject)
+				.setIssuedAt(new Date(System.currentTimeMillis()))
+				.setExpiration(accessTokenExpireTime)
+				.signWith(SignatureAlgorithm.HS512, secret)
+				.compact();
+		
+		// Refresh Token 생성
+		Date refreshTokenExpireTime = new Date(now + REFRESH_TOKEN_EXPIRE_TIME);
+		String refreshToken = Jwts.builder()
+				.setExpiration(refreshTokenExpireTime)
+				.signWith(SignatureAlgorithm.HS512, secret)
+				.compact();
+				
+		return new JwtResponse(accessToken, refreshToken, REFRESH_TOKEN_EXPIRE_TIME, subject);
 	}
 
 	public Boolean validateToken(String token, UserDetails userDetails) {
