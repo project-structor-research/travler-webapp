@@ -121,6 +121,12 @@
 			<artifactId>spring-boot-starter-quartz</artifactId>
 		</dependency>
 
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<optional>true</optional>
+		</dependency>
+
 		<!-- log -->
 		<dependency>
 			<groupId>org.bgee.log4jdbc-log4j2</groupId>
