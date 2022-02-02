@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="user">
+	<select id="findByEmail" parameterType="hashmap" resultType="com.springframework.travler.entity.Users">
+		SELECT
+			SEQ,
+			USERNAME,
+			PASSWORD,
+			NAME,
+			EMAIL,
+			ADDRESS,
+			ROLE
+		FROM 
+			MEMBER
+		WHERE
+			EMAIL = #{P_EMAIL}
+	</select>
+	
+	<select id="existsByEmail" parameterType="hashmap" resultType="int">
+		SELECT
+			COUNT(1) 
+		FROM 
+			MEMBER
+		WHERE 
+			EMAIL = #{P_EMAIL}
+	</select>
+</mapper>
