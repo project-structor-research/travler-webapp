@@ -34,7 +34,7 @@ public class UsersService {
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
-    private final RedisTemplate redisTemplate;
+    private final RedisTemplate<String, Object> redisTemplate;
 
     public ResponseEntity<?> signUp(UserRequestDto.SignUp signUp) {
         if (usersRepository.existsByEmail(signUp.getEmail())) {

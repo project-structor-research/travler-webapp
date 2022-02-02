@@ -1,7 +1,6 @@
 package com.springframework.travler.controller;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,7 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.springframework.travler.dto.Response;
 import com.springframework.travler.dto.request.UserRequestDto;
-import com.springframework.travler.jwt.JwtTokenProvider;
 import com.springframework.travler.lib.Helper;
 import com.springframework.travler.service.UsersService;
 
@@ -23,7 +21,6 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 public class UsersController {
 
-    private final JwtTokenProvider jwtTokenProvider;
     private final UsersService usersService;
     private final Response response;
 

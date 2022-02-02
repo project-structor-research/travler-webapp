@@ -23,7 +23,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private JwtTokenProvider jwtTokenProvider;
     
     @Autowired
-    private RedisTemplate redisTemplate;
+    private RedisTemplate<String, Object> redisTemplate;
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
@@ -33,9 +33,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/api/**").permitAll()
-//                .antMatchers("/api/v1/users/userTest").hasRole("USER")
-//                .antMatchers("/api/v1/users/adminTest").hasRole("ADMIN")
+                .antMatchers("/api/sign-up", "/api/login", "/api/authority", "/api/reissue", "/api/logout").permitAll()
+                .antMatchers("/api/userTest").hasRole("USER")
+                .antMatchers("/api/adminTest").hasRole("ADMIN")
                 .and()
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider, redisTemplate), UsernamePasswordAuthenticationFilter.class);
                 // JwtAuthenticationFilter를 UsernamePasswordAuthentictaionFilter 전에 적용시킨다.
