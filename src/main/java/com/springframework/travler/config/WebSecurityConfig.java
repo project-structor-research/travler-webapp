@@ -20,30 +20,37 @@ import lombok.RequiredArgsConstructor;
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private JwtTokenProvider jwtTokenProvider;
-    
-    @Autowired
-    private RedisTemplate<String, Object> redisTemplate;
+	private JwtTokenProvider jwtTokenProvider;
 
-    @Override
-    protected void configure(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity
-                .httpBasic().disable()
-                .csrf().disable()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .authorizeRequests()
-                .antMatchers("/api/sign-up", "/api/login", "/api/authority", "/api/reissue", "/api/logout").permitAll()
-                .antMatchers("/api/userTest").hasRole("USER")
-                .antMatchers("/api/adminTest").hasRole("ADMIN")
-                .and()
-                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider, redisTemplate), UsernamePasswordAuthenticationFilter.class);
-                // JwtAuthenticationFilter를 UsernamePasswordAuthentictaionFilter 전에 적용시킨다.
-    }
+	@Autowired
+	private RedisTemplate<String, Object> redisTemplate;
 
-    // 암호화에 필요한 PasswordEncoder Bean 등록
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+	@Override
+	protected void configure(HttpSecurity httpSecurity) throws Exception {
+		httpSecurity
+			.csrf().disable()
+			.formLogin().disable()
+			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+		
+		httpSecurity.authorizeRequests()	
+			.antMatchers("/api/sign-up", "/api/login", "/api/authority", "/api/reissue", "/api/logout").permitAll()
+			.antMatchers("/api/userTest").hasRole("USER")
+			.antMatchers("/api/adminTest").hasRole("ADMIN")
+			.anyRequest().authenticated();
+		
+		httpSecurity.logout().logoutUrl("/api/logout").permitAll()
+			.deleteCookies("JSESSIONID")
+			.logoutSuccessUrl("/")
+			.invalidateHttpSession(true);
+		
+		httpSecurity
+			.addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider, redisTemplate), UsernamePasswordAuthenticationFilter.class);
+		// JwtAuthenticationFilter를 UsernamePasswordAuthentictaionFilter 전에 적용시킨다.
+	}
+
+	// 암호화에 필요한 PasswordEncoder Bean 등록
+	@Bean
+	public PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
 }

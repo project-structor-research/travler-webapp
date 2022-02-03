@@ -1,5 +1,7 @@
 package com.springframework.travler.controller;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
@@ -34,13 +36,13 @@ public class UsersController {
     }
 
     @PostMapping("/api/login")
-    public ResponseEntity<?> login(@Validated @RequestBody UserRequestDto.Login login, Errors errors) {
+    public ResponseEntity<?> login(@Validated @RequestBody UserRequestDto.Login login, HttpServletResponse res, Errors errors) {
         // validation check
 //    	String password = BCrypt.hashpw(login.getPassword(), BCrypt.gensalt());
         if (errors.hasErrors()) {
             return response.invalidFields(Helper.refineErrors(errors));
         }
-        return usersService.login(login);
+        return usersService.login(login, res);
     }
 
     @PostMapping("/api/reissue")

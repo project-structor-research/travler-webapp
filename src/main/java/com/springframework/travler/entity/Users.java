@@ -29,6 +29,8 @@ public class Users extends BaseTime implements UserDetails {
     @Column
     private String password;
     
+    private String rememberMe;
+    
     @Column
     private String role;
 

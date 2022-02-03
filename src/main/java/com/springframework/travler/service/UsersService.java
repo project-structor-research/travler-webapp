@@ -3,6 +3,9 @@ package com.springframework.travler.service;
 import java.util.Collections;
 import java.util.concurrent.TimeUnit;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,6 +39,8 @@ public class UsersService {
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final RedisTemplate<String, Object> redisTemplate;
 
+    private static final long ACCESS_TOKEN_EXPIRE_TIME = 30 * 60 * 1000L;	// 30분
+    
     public ResponseEntity<?> signUp(UserRequestDto.SignUp signUp) {
         if (usersRepository.existsByEmail(signUp.getEmail())) {
             return response.fail("이미 회원가입된 이메일입니다.", HttpStatus.BAD_REQUEST);
@@ -51,7 +56,7 @@ public class UsersService {
         return response.success("회원가입에 성공했습니다.");
     }
 
-    public ResponseEntity<?> login(UserRequestDto.Login login) {
+    public ResponseEntity<?> login(UserRequestDto.Login login, HttpServletResponse res) {
 
         if (usersRepository.findByEmail(login.getEmail()) == null) {
             return response.fail("해당하는 유저가 존재하지 않습니다.", HttpStatus.BAD_REQUEST);
@@ -67,6 +72,11 @@ public class UsersService {
 
         // 3. 인증 정보를 기반으로 JWT 토큰 생성
         UserResponseDto.TokenInfo tokenInfo = jwtTokenProvider.generateToken(authentication);
+        
+        Cookie cookie = new Cookie("X-AUTH-TOKEN", tokenInfo.getAccessToken());
+        cookie.setHttpOnly(true);
+        cookie.setMaxAge((int) ACCESS_TOKEN_EXPIRE_TIME);
+        res.addCookie(cookie);
 
         // 4. RefreshToken Redis 저장 (expirationTime 설정을 통해 자동 삭제 처리)
         redisTemplate.opsForValue()
